@@ -1,59 +1,259 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Sistema de Formatação de CPFs
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Sistema web para formatação de CPFs desenvolvido com Laravel 12 e Vue.js 3. Permite processar múltiplos CPFs de uma vez, formatando-os automaticamente no padrão brasileiro (XXX.XXX.XXX-XX).
 
-## About Laravel
+## 🚀 Funcionalidades
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Formatação automática de CPFs no padrão brasileiro
+- Suporte a múltiplos CPFs separados por ponto e vírgula (`;`) ou vírgula (`,`)
+- Interface web moderna com Vue.js e Tailwind CSS
+- API REST para processamento de CPFs
+- Testes unitários e de integração completos
+- Normalização automática (remove caracteres especiais, preenche zeros à esquerda)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP >= 8.2
+- Composer
+- Node.js >= 18.x e npm
+- SQLite (ou outro banco de dados suportado pelo Laravel)
 
-## Learning Laravel
+## 🔧 Instalação
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+### 1. Clone o repositório
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+git clone <url-do-repositorio>
+cd project-test
+```
 
-## Laravel Sponsors
+### 2. Instale as dependências do PHP
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+composer install
+```
 
-### Premium Partners
+### 3. Configure o ambiente
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-## Contributing
+### 4. Configure o banco de dados
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+O projeto usa SQLite por padrão. Crie o arquivo de banco de dados:
 
-## Code of Conduct
+```bash
+touch database/database.sqlite
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Ou configure outro banco de dados no arquivo `.env`:
 
-## Security Vulnerabilities
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=nome_do_banco
+DB_USERNAME=usuario
+DB_PASSWORD=senha
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 5. Execute as migrações
 
-## License
+```bash
+php artisan migrate
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### 6. Instale as dependências do Node.js
+
+```bash
+npm install
+```
+
+### 7. Compile os assets
+
+Para desenvolvimento:
+
+```bash
+npm run dev
+```
+
+Para produção:
+
+```bash
+npm run build
+```
+
+## 🏃 Como Executar
+
+### Desenvolvimento
+
+Em um terminal, inicie o servidor Laravel:
+
+```bash
+php artisan serve
+```
+
+Em outro terminal, inicie o Vite (se estiver em modo de desenvolvimento):
+
+```bash
+npm run dev
+```
+
+Acesse a aplicação em: `http://localhost:8000`
+
+### Produção
+
+Após compilar os assets com `npm run build`, inicie apenas o servidor Laravel:
+
+```bash
+php artisan serve
+```
+
+## 🧪 Executando os Testes
+
+Execute todos os testes:
+
+```bash
+php artisan test
+```
+
+Execute apenas os testes de CPF:
+
+```bash
+php artisan test --filter Cpf
+```
+
+Execute testes específicos:
+
+```bash
+php artisan test tests/Unit/CpfFormatterServiceTest.php
+php artisan test tests/Feature/CpfControllerTest.php
+```
+
+## 📡 API Endpoints
+
+### POST `/api/processar-cpfs`
+
+Processa e formata múltiplos CPFs.
+
+**Request Body:**
+```json
+{
+  "cpfs": "12345678901;98765432100;11122233344"
+}
+```
+
+**Response (Sucesso):**
+```json
+{
+  "success": true,
+  "message": "CPFs processados e formatados com sucesso",
+  "data": [
+    "123.456.789-01",
+    "987.654.321-00",
+    "111.222.333-44"
+  ]
+}
+```
+
+**Response (Erro):**
+```json
+{
+  "success": false,
+  "message": "Dados inválidos na requisição",
+  "errors": {
+    "cpfs": ["The cpfs field must be a string."]
+  }
+}
+```
+
+**Exemplo com cURL:**
+```bash
+curl -X POST http://localhost:8000/api/processar-cpfs \
+  -H "Content-Type: application/json" \
+  -d '{"cpfs": "12345678901;98765432100"}'
+```
+
+## 📁 Estrutura do Projeto
+
+```
+project-test/
+├── app/
+│   └── Http/
+│       ├── Controllers/
+│       │   └── CpfController.php      # Controller da API
+│       └── Services/
+│           └── CpfFormatterService.php # Serviço de formatação
+├── resources/
+│   ├── js/
+│   │   ├── App.vue                    # Componente principal Vue
+│   │   └── components/
+│   │       └── CpfInput.vue           # Componente de input
+│   └── views/
+│       └── welcome.blade.php          # View principal
+├── routes/
+│   ├── api.php                        # Rotas da API
+│   └── web.php                        # Rotas web
+└── tests/
+    ├── Unit/
+    │   └── CpfFormatterServiceTest.php # Testes unitários
+    └── Feature/
+        └── CpfControllerTest.php      # Testes de integração
+```
+
+## 🎯 Como Usar
+
+### Interface Web
+
+1. Acesse `http://localhost:8000`
+2. Digite os CPFs no campo de texto, separados por ponto e vírgula (`;`)
+3. Clique em "Processar CPFs"
+4. Os CPFs formatados serão exibidos na lista abaixo
+
+**Exemplo de entrada:**
+```
+12345678901;98765432100;11122233344
+```
+
+### API
+
+Faça uma requisição POST para `/api/processar-cpfs` com o campo `cpfs` contendo os CPFs separados por ponto e vírgula ou vírgula.
+
+## 🔍 Funcionalidades do Formatador
+
+- Remove caracteres não numéricos
+- Preenche com zeros à esquerda se o CPF tiver menos de 11 dígitos
+- Trunca se o CPF tiver mais de 11 dígitos
+- Aplica a máscara padrão: `XXX.XXX.XXX-XX`
+
+## 📝 Exemplos
+
+### CPF com menos de 11 dígitos
+- Entrada: `123456789`
+- Saída: `001.234.567-89`
+
+### CPF já formatado
+- Entrada: `123.456.789-01`
+- Saída: `123.456.789-01`
+
+### CPF com caracteres especiais
+- Entrada: `123 456 789 01`
+- Saída: `123.456.789-01`
+
+### CPF com mais de 11 dígitos
+- Entrada: `123456789012345`
+- Saída: `123.456.789-01` (trunca)
+
+## 🛠️ Tecnologias Utilizadas
+
+- **Backend:** Laravel 12
+- **Frontend:** Vue.js 3, Tailwind CSS
+- **Build Tool:** Vite
+- **Testes:** PHPUnit
+- **HTTP Client:** Axios
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT.
